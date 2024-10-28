@@ -1,32 +1,26 @@
-import React, { useState, useContext } from 'react';
-import { CartContext } from './ContextCart';
+import React, { useContext, useState } from 'react';
+import { CartContext } from './CartContext';
+import ProductDetail from './ProductDetail';
 import './Cart.css';
 
-export default function Header() {
-  const [showCart, setShowCart] = useState(false); 
-  const { cart, removeFromCart, updateQuantity } = useContext(CartContext); 
+function Cart() {
+  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
 
-  const toggleCart = () => {
-    setShowCart(!showCart);
+  const handleBackToCart = () => {
+    setSelectedProduct(null);
   };
 
   return (
-    <div className='App-header'>
-      <div className='navContainer'>
-        <ul>
-          <li>Home</li>
-          <li>Products</li>
-          <li onClick={toggleCart} style={{ cursor: 'pointer' }}>Cart</li>
-        </ul>
-      </div>
-
-      <h1>Fake Store</h1>
+    <div className="cart-container">
+      <h2>Shopping Cart</h2>
 
 
-      {showCart && (
-        <div className='cart-dropdown'>
-          <h2>Your Cart</h2>
+      {selectedProduct ? (
+        <ProductDetail productId={selectedProduct} onBack={handleBackToCart} />
+      ) : (
+        <>
           {cart.length === 0 ? (
             <p>Your cart is empty.</p>
           ) : (
@@ -43,6 +37,10 @@ export default function Header() {
                       <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
                     </div>
                     <button onClick={() => removeFromCart(item.id)} className="remove-button">Remove</button>
+                  
+                    <button onClick={() => setSelectedProduct(item.id)} className="view-details-button">
+                      View Details
+                    </button>
                   </div>
                 </div>
               ))}
@@ -51,8 +49,10 @@ export default function Header() {
               </div>
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
 }
+
+export default Cart;

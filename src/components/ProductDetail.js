@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { CartContext } from './ContextCart'; 
 
 const ProductDetail = ({ productId, onBack }) => {
   const [product, setProduct] = useState(null);
+  const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     if (productId) {
@@ -13,6 +15,11 @@ const ProductDetail = ({ productId, onBack }) => {
 
   if (!product) return <p>Loading...</p>;
 
+  
+  const handleAddToCart = () => {
+    addToCart(product); 
+  };
+
   return (
     <div className="product-detail">
       <img src={product.image} alt={product.title} />
@@ -22,6 +29,10 @@ const ProductDetail = ({ productId, onBack }) => {
         <strong>Price:</strong> ${product.price}
       </p>
       <button onClick={onBack}>Back</button>
+
+      <button onClick={handleAddToCart} className="addtocart-button">
+        Add to Cart
+      </button>
     </div>
   );
 };

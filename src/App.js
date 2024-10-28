@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ProductsList from './components/ProductsList';
 import ProductDetail from './components/ProductDetail';
+import { CartProvider } from './components/ContextCart';
 
 function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -18,6 +19,9 @@ function App() {
 
   return (
     <div className="App">
+       <CartProvider>
+   
+  
       <Header />
       {selectedProduct ? (
         <ProductDetail productId={selectedProduct} onBack={handleBack} />
@@ -25,6 +29,7 @@ function App() {
         <ProductsList onSelectProduct={handleSelectProduct} />
       )}
       <Footer />
+      </CartProvider>
     </div>
   );
 }
